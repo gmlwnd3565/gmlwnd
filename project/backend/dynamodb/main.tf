@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "ssoon_dynamodbtable" {
-  name         = "terraform-locks"
+  name         = "test"
   billing_mode = "PAY_PER_REQUEST" 
   hash_key     = "LockID"
 
