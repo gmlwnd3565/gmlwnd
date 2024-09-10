@@ -38,3 +38,44 @@ module "security_group" {
   vpc_name        = "my-vpc"
   allowed_ssh_cidr = "0.0.0.0/0"
 }
+
+# Bastion Host 생성
+module "bastion" {
+  source          = "./modules/bastion_host"
+  ami_id          = "ami-07d737d4d8119ad79"  # 원하는 AMI ID로 변경
+  subnet_id       = element(module.subnets.public_subnet_ids, 0)
+  key_name        = "teamProject"            # 자신의 키페어 이름으로 변경
+  security_group_id = module.security_group.bastion_sg_id        # 적절한 보안 그룹 ID로 변경
+}
+
+# ECR 생성
+module "ecr" {
+  source          = "./modules/ecr"
+  repository_name = "my-ecr-repository"
+}
+
+# RDS 생성
+module "rds" {
+  source               = "./modules/rds"
+  db_identifier        = "my-rds-instance"
+  db_name              = "mydatabase"
+  db_username          = "admin"
+  db_password          = "p@ssw0rd"      # 실제로는 변수를 사용하는 것이 좋습니다.
+  db_engine            = "mysql"
+  db_instance_class    = "db.t3.micro"
+  subnet_ids           = module.subnets.private_subnet_ids
+  security_group_id    = module.security_group.nat_sg_id
+}
+
+terraform {
+  backend "s3" {
+    # 이전에 생성한 버킷 이름
+    bucket         = "test-soldesk"
+    key            = "dev/terraform.tfstate"
+    region         = "ap-northeast-2"
+    
+    # 이전에 생성한 다이나모db 이름
+    dynamodb_table = "terraform-locks"
+    # encrypt        = true
+  }
+}
