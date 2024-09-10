@@ -20,6 +20,13 @@ resource "aws_security_group" "public_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # Allow inbound SSH traffic from a specific IP (you can change this to match your needs)
   ingress {
     from_port   = 22
