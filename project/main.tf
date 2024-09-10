@@ -80,17 +80,17 @@ terraform {
   }
 }
 
-module "apigateway" {
-  source          = "./modules/apigateway"
-  api_name        = "my-api"
-  api_path        = "myresource"
-  api_method      = "GET"
-  integration_uri = "https://your-backend-url"  # API의 백엔드 URI
-}
+# module "apigateway" {
+#   source          = "./modules/apigateway"
+#   api_name        = "my-api"
+#   api_path        = "myresource"
+#   api_method      = "GET"
+#   integration_uri = "https://your-backend-url"  # API의 백엔드 URI
+# }
 
-# Cognito 생성
-module "cognito" {
-  source              = "./modules/cognito"
-  user_pool_name      = "my-user-pool"
-  user_pool_client_name = "my-user-pool-client"
-}
+# # Cognito 생성
+# module "cognito" {
+#   source              = "./modules/cognito"
+#   user_pool_name      = "my-user-pool"
+#   user_pool_client_name = "my-user-pool-client"
+# }dawd
