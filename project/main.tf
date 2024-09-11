@@ -94,3 +94,20 @@ terraform {
 #   user_pool_name      = "my-user-pool"
 #   user_pool_client_name = "my-user-pool-client"
 # }
+
+module "lambda" {
+  source              = "./modules/lambda"
+  lambda_function_name = var.lambda_function_name
+  lambda_zip_file      = var.lambda_zip_file
+  lambda_env           = "production"
+  sqs_queue_name       = "my_sqs_queue"
+  sns_topic_name       = "my_sns_topic"
+}
+
+module "api" {
+  source = "./modules/api"
+
+  api_name       = var.api_name
+  api_stage_name = var.api_stage_name
+  lambda_arn     = module.lambda.lambda_function_arn
+}
