@@ -67,18 +67,18 @@ module "rds" {
   security_group_id    = module.security_group.nat_sg_id
 }
 
-terraform {
-  backend "s3" {
-    # 이전에 생성한 버킷 이름
-    bucket         = "test-soldesk"
-    key            = "project"
-    region         = "ap-northeast-2"
+# terraform {
+#   backend "s3" {
+#     # 이전에 생성한 버킷 이름
+#     bucket         = "test-soldesk"
+#     key            = "project"
+#     region         = "ap-northeast-2"
     
-    # 이전에 생성한 다이나모db 이름
-    dynamodb_table = "test"
-    # encrypt        = true
-  }
-}
+#     # 이전에 생성한 다이나모db 이름
+#     dynamodb_table = "test"
+#     # encrypt        = true
+#   }
+# }
 
 # module "apigateway" {
 #   source          = "./modules/apigateway"
@@ -105,9 +105,12 @@ module "lambda" {
 }
 
 module "api" {
-  source = "./modules/api"
-
-  api_name       = var.api_name
-  api_stage_name = var.api_stage_name
-  lambda_arn     = module.lambda.lambda_function_arn
+  source          = "./modules/apigateway"
+  api_name        = var.api_name
+  api_stage_name  = var.api_stage_name
+  lambda_arn      = module.lambda.lambda_function_arn
+  api_path        = var.api_path
+  api_method      = var.api_method
+  integration_uri = var.integration_uri
 }
+
