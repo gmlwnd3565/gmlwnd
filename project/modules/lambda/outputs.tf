@@ -12,3 +12,7 @@ output "sns_topic_arn" {
   description = "The ARN of the SNS topic."
   value       = module.sns.sns_topic_arn
 }
+
+output "cloudwatch_log_group_name" {
+  value = module.cloudwatch.log_group_name
+}
