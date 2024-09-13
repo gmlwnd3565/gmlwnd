@@ -9,6 +9,8 @@ resource "aws_lambda_function" "lambda_function" {
   environment {
     variables = {
       ENV = var.lambda_env
+      SQS_ENV = module.sqs.queue_url
+      SNS_ENV = module.sns.sns_topic_arn
     }
   }
 }
@@ -50,7 +52,8 @@ resource "aws_iam_policy" "lambda_sqs_policy" {
         Action = [
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
-          "sqs:GetQueueAttributes"
+          "sqs:GetQueueAttributes",
+          "sqs:SendMessage"
         ],
         Effect   = "Allow",
         Resource = module.sqs.sqs_queue_arn
@@ -89,3 +92,8 @@ module "sns" {
   lambda_function_arn = aws_lambda_function.lambda_function.arn
 }
 
+module "cloudwatch" {
+  source           = "../cloudwatch"
+  log_group_name   = "aws-waf-logs-${var.lambda_function_name}"
+  retention_in_days = var.cloudwatch_retention_in_days
+}
