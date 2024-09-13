@@ -62,3 +62,21 @@ variable "api_stage_name" {
   description = "The stage name for the API Gateway."
   default     = "dev"  # 기본 스테이지 이름 (예: 개발 환경)
 }
+
+variable "integration_uri" {
+  description = "The URI for the REST API integration."
+  type        = string
+  default     = "http://www.wlgh921116.shop"
+}
+
+variable "api_path" {
+  description = "The path for the REST API resource."
+  type        = string
+  default = "myresource"
+}
+
+variable "api_method" {
+  description = "The HTTP method for the REST API resource."
+  type        = string
+  default     = "GET"
+}
