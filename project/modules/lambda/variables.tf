@@ -27,3 +27,9 @@ variable "lambda_sqs_policy" {
   type = string
   default = "The name of SQS Policy Name"
 }
+
+variable "cloudwatch_retention_in_days" {
+  description = "The number of days to retain log events in the specified log group"
+  type        = number
+  default     = 7
+}
