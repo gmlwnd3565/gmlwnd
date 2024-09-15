@@ -42,7 +42,6 @@ resource "aws_lambda_function" "nodejs_function" {
   ]
 }
 
-
 resource "aws_lambda_layer_version" "mysql_layer" {
   filename   = var.nodejs_zip_file
   layer_name = "nodejs-layer"
@@ -202,27 +201,27 @@ resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
 data "terraform_remote_state" "vpc" {
   backend = "local"
   config = {
-    path = "../../live/dev/terraform.tfstate"
+    path = "../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "rds" {
   backend = "local"
   config = {
-    path = "../../live/dev/terraform.tfstate"
+    path = "../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "subnets" {
   backend = "local"
   config = {
-    path = "../../live/dev/terraform.tfstate"
+    path = "../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "security_groups" {
   backend = "local"
   config = {
-    path = "../../live/dev/terraform.tfstate"
+    path = "../../live/dev/static/terraform.tfstate"
   }
 }
