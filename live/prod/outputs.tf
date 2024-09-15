@@ -1,27 +1,16 @@
-output "vpc_id" {
-  value = module.vpc.vpc_id
+output "lambda_function_arn" {
+  value       = module.lambda.lambda_function_arn
+  description = "The ARN of the Lambda function."
 }
 
-output "bastion_instance_id" {
-  value = module.bastion.bastion_instance_id
+output "cloudwatch_log_group_name" {
+  value = module.lambda.cloudwatch_log_group_name
 }
 
-output "lambda_function_name" {
-  value = module.lambda.lambda_function_name
+output "sqs_queue_arn" {
+  value = module.lambda.sqs_queue_arn
 }
 
-output "rds_endpoint" {
-  value = module.rds.rds_endpoint
-}
-
-output "alb_dns_name" {
-  value = module.alb.alb_dns_name
-}
-
-output "s3_bucket_name" {
-  value = module.s3.s3_bucket_name
-}
-
-output "api_gateway_url" {
-  value = module.api_gateway.api_gateway_url
+output "sns_topic_arn" {
+  value = module.lambda.sns_topic_arn
 }

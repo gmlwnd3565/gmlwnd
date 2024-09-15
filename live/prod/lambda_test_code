@@ -1,0 +1,9 @@
+{
+  "detail-type": "CloudWatch Alarm State Change",
+  "detail": {
+    "alarmName": "my-alarm",
+    "state": {
+      "value": "ALARM"
+    }
+  }
+}

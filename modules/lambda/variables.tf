@@ -3,7 +3,17 @@ variable "lambda_function_name" {
   description = "The name of the Lambda function."
 }
 
+variable "lambda_nodejs_name" {
+  type        = string
+  description = "The name of the NodeJs function."
+}
+
 variable "lambda_zip_file" {
+  type        = string
+  description = "The path to the Lambda zip file."
+}
+
+variable "lambda_nodejs_file" {
   type        = string
   description = "The path to the Lambda zip file."
 }
@@ -32,4 +42,9 @@ variable "cloudwatch_retention_in_days" {
   description = "The number of days to retain log events in the specified log group"
   type        = number
   default     = 7
+}
+
+variable "nodejs_zip_file" {
+  type        = string
+  description = "The path to the NodeJs zip file."
 }

@@ -12,18 +12,6 @@ module "vpc" {
   name                 = "dev-vpc"
 }
 
-# module "lambda" {
-#   source              = "../../modules/lambda"
-#   lambda_function_name = "dev-lambda-function"
-#   lambda_role_arn     = "arn:aws:iam::123456789012:role/lambda-execution-role"
-#   handler             = "index.handler"
-#   runtime             = "nodejs14.x"
-#   filename            = "path_to_lambda_zip/lambda_function.zip"
-#   environment_variables = {
-#     STAGE = "dev"
-#   }
-#   apigw_source_arn = "arn:aws:execute-api:ap-northeast-2:123456789012:abc123/*/GET/myresource"
-# }
 
 module "bastion" {
   source            = "../../modules/bastion_host"
@@ -81,7 +69,3 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-# module "cloudwatch" {
-#   source                = "../../modules/cloudwatch"
-#   lambda_function_name  = module.lambda.lambda_function_name
-# }

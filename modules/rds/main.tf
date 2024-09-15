@@ -13,6 +13,7 @@ resource "aws_db_instance" "rds" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = var.instance_class
+  db_name              = var.db_name
   username             = var.username
   password             = var.password
   publicly_accessible  = true

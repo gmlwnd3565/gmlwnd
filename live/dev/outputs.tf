@@ -22,6 +22,26 @@ output "s3_bucket_name" {
   value = module.s3.bucket_name
 }
 
-# output "api_gateway_url" {
-#   value = module.api_gateway.api_gateway_url
-# }
+output "rds_username" {
+  value = module.rds.rds_username
+  description = "RDS master username"
+}
+
+output "rds_db_name" {
+  value = module.rds.rds_db_name
+  description = "RDS database name"
+}
+
+output "rds_password" {
+  value = module.rds.rds_password
+  description = "RDS master password"
+  sensitive = true
+}
+
+output "public_subnet_ids" {
+  value = module.vpc.public_subnet_ids
+}
+
+output "security_group_id" {
+  value = module.security_group.security_group_id
+}

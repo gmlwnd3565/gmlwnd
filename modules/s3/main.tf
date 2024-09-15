@@ -6,9 +6,9 @@ resource "aws_s3_bucket" "soon_s3bucket" {
   bucket = "cloud-ridge"
 
   # 리소스 삭제 시 테라폼 오류와 함께 종료됨
-  lifecycle {
-    prevent_destroy = true
-  }
+  # lifecycle {
+  #   prevent_destroy = true
+  # }
 }
 
 # S3 버킷에서 버전 관리를 제어하기 위한 리소스를 제공합니다.
