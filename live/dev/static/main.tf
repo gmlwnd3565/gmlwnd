@@ -43,7 +43,7 @@ module "security_group" {
 
 module "s3" {
   source      = "../../../modules/s3"
-  bucket_name = "cloud-rigde"
+  bucket_name = "cloud-rigde-dev"
  
 
   dynamodb_table = "terraform-locks"

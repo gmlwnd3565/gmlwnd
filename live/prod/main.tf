@@ -3,17 +3,17 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "../../../modules/vpc"
   
-  cidr_block           = "10.0.0.0/16"
-  public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
-  private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+  cidr_block           = "10.1.0.0/16"
+  public_subnet_cidrs  = ["10.1.1.0/24", "10.1.2.0/24"]
+  private_subnet_cidrs = ["10.1.3.0/24", "10.1.4.0/24"]
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "prod-vpc"
 }
 
 module "bastion" {
-  source            = "../../modules/bastion_host"
+  source            = "../../../modules/bastion_host"
   bastion_ami       = "ami-07d737d4d8119ad79"
   bastion_instance_type = "t2.micro"
   public_subnet_id  = module.vpc.public_subnet_ids[0]
@@ -21,7 +21,7 @@ module "bastion" {
 }
 
 module "rds" {
-  source         = "../../modules/rds"
+  source         = "../../../modules/rds"
   db_name        = "mydb"
   username       = "admin"
   password       = "password"
@@ -31,7 +31,7 @@ module "rds" {
 }
 
 module "security_group" {
-  source = "../../modules/security_groups"
+  source = "../../../modules/security_groups"
   name   = "rds-security-group"
   vpc_id = module.vpc.vpc_id
 
@@ -41,8 +41,8 @@ module "security_group" {
 }
 
 module "s3" {
-  source      = "../../modules/s3"
-  bucket_name = "cloud-rigde"
+  source      = "../../../modules/s3"
+  bucket_name = "cloud-rigde-prod"
 }
 
 
@@ -52,12 +52,12 @@ module "cognito" {
 }
 
 module "ecr" {
-  source = "../../modules/ecr"
+  source = "../../../modules/ecr"
   repository_name = "prod-repo"
 }
 
 module "alb" {
-  source         = "../../modules/alb"
+  source         = "../../../modules/alb"
   alb_name       = "prod-alb"
   public_subnets = module.vpc.public_subnet_ids
 

@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "soon_s3bucket" {
-  bucket = "cloud-ridge"
+  bucket = var.bucket_name
 
   # 리소스 삭제 시 테라폼 오류와 함께 종료됨
   # lifecycle {
