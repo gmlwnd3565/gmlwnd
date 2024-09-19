@@ -15,7 +15,7 @@ resource "aws_lambda_function" "lambda_function" {
   }
 }
 
-resource "aws_lambda_function" "nodejs_function" {
+resource "aws_lambda_function" "cognito_to_rds_function" {
   function_name = var.lambda_nodejs_name
   runtime       = "nodejs16.x"
   role          = aws_iam_role.nodejs_role.arn
@@ -177,51 +177,58 @@ module "cloudwatch" {
   retention_in_days = var.cloudwatch_retention_in_days
 }
 
-# Cognito Lambda 설정
-resource "aws_cognito_user_pool" "user_pool" {
-  name = "user_pool"
+# # Cognito Lambda 설정
+# resource "aws_cognito_user_pool" "user_pool" {
+#   name = "user_pool"
 
-  lambda_config {
-    pre_sign_up           = aws_lambda_function.nodejs_function.arn        # 사용자가 가입 요청을 보낼 때 호출
-    post_confirmation     = aws_lambda_function.nodejs_function.arn        # 사용자가 가입 확인을 마친 후 호출
-    # pre_authentication  = aws_lambda_function.nodejs_function.arn        # 사용자가 로그인 요청을 보낼 때 호출
-    # post_authentication = aws_lambda_function.nodejs_function.arn       # 사용자가 성공적으로 로그인한 후 호출
-    # custom_message      = aws_lambda_function.nodejs_function.arn        # 메시지를 커스터마이즈할 때 호출
-  }
-}
+#   lambda_config {
+#     pre_sign_up           = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 가입 요청을 보낼 때 호출
+#     post_confirmation     = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 가입 확인을 마친 후 호출
+#     # pre_authentication  = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 로그인 요청을 보낼 때 호출
+#     # post_authentication = aws_lambda_function.cognito_to_rds_function.arn       # 사용자가 성공적으로 로그인한 후 호출
+#     # custom_message      = aws_lambda_function.cognito_to_rds_function.arn        # 메시지를 커스터마이즈할 때 호출
+#   }
+# }
 
-resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
-  statement_id  = "AllowCognitoInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.nodejs_function.function_name
-  principal     = "cognito-idp.amazonaws.com"
-  source_arn    = aws_cognito_user_pool.user_pool.arn
-}
+# resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
+#   statement_id  = "AllowCognitoInvoke"
+#   action        = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.cognito_to_rds_function.function_name
+#   principal     = "cognito-idp.amazonaws.com"
+#   source_arn    = data.terraform_remote_state.cognito.outputs.cognito_user_pool_id
+# }
 
 data "terraform_remote_state" "vpc" {
   backend = "local"
   config = {
-    path = "../../live/dev/static/terraform.tfstate"
+    path = "../../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "rds" {
   backend = "local"
   config = {
-    path = "../../live/dev/static/terraform.tfstate"
+    path = "../../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "subnets" {
   backend = "local"
   config = {
-    path = "../../live/dev/static/terraform.tfstate"
+    path = "../../../live/dev/static/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "security_groups" {
   backend = "local"
   config = {
-    path = "../../live/dev/static/terraform.tfstate"
+    path = "../../../live/dev/static/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "cognito" {
+  backend = "local"
+  config = {
+    path = "../../../live/dev/static/terraform.tfstate"
   }
 }

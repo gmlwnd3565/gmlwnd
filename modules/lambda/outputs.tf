@@ -3,6 +3,11 @@ output "lambda_function_arn" {
   value       = aws_lambda_function.lambda_function.arn
 }
 
+output "cognito_to_rds_function_arn" {
+  description = "The ARN of the Congito function."
+  value       = aws_lambda_function.cognito_to_rds_function.arn
+}
+
 output "sqs_queue_arn" {
   description = "The ARN of the SQS queue."
   value       = module.sqs.sqs_queue_arn

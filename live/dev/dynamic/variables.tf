@@ -27,7 +27,7 @@ variable "lambda_function_name" {
 variable "lambda_nodejs_name" {
   type        = string
   description = "The name of the NodeJs function."
-  default     = "nodejs_function"
+  default     = "cognito_to_rds_function"
 }
 
 variable "lambda_handler" {
@@ -50,13 +50,13 @@ variable "lambda_zip_file" {
 
 variable "lambda_nodejs_file" {
   type        = string
-  description = "Path to the zipped NodeJs deployment package."
-  default     = "nodejs_function.zip"
+  description = "Path to the zipped Cognito deployment package."
+  default     = "cognito_function.zip"
 }
 
 variable "nodejs_zip_file" {
   type        = string
-  description = "The path to the NodeJs zip file."
+  description = "The path to the Cognito zip file."
   default     = "layer.zip"
 }
 
