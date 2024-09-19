@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "../../../modules/vpc"
   
   cidr_block           = "10.0.0.0/16"
   public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
@@ -14,7 +14,7 @@ module "vpc" {
 
 
 module "bastion" {
-  source            = "../../modules/bastion_host"
+  source            = "../../../modules/bastion_host"
   bastion_ami       = "ami-07d737d4d8119ad79"
   bastion_instance_type = "t2.micro"
   public_subnet_id  = module.vpc.public_subnet_ids[0]
@@ -22,7 +22,7 @@ module "bastion" {
 }
 
 module "rds" {
-  source         = "../../modules/rds"
+  source         = "../../../modules/rds"
   db_name        = "mydb"
   username       = "admin"
   password       = "password"
@@ -32,7 +32,7 @@ module "rds" {
 }
 
 module "security_group" {
-  source = "../../modules/security_groups"
+  source = "../../../modules/security_groups"
   name   = "rds-security-group"
   vpc_id = module.vpc.vpc_id
 
@@ -42,8 +42,12 @@ module "security_group" {
 }
 
 module "s3" {
-  source      = "../../modules/s3"
+  source      = "../../../modules/s3"
   bucket_name = "cloud-rigde"
+ 
+
+  dynamodb_table = "terraform-locks"
+    # encrypt        = true
 }
 
 # module "api_gateway" {
@@ -52,17 +56,17 @@ module "s3" {
 # }
 
 module "cognito" {
-  source          = "../../modules/cognito"
+  source          = "../../../modules/cognito"
   user_pool_name  = "dev-user-pool"
 }
 
 module "ecr" {
-  source = "../../modules/ecr"
+  source = "../../../modules/ecr"
   repository_name = "dev-repo"
 }
 
 module "alb" {
-  source         = "../../modules/alb"
+  source         = "../../../modules/alb"
   alb_name       = "dev-alb"
   public_subnets = module.vpc.public_subnet_ids
 
