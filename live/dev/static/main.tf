@@ -55,10 +55,10 @@ module "s3" {
 #   api_name = "dev-api"
 # }
 
-module "cognito" {
-  source          = "../../../modules/cognito"
-  user_pool_name  = "dev-user-pool"
-}
+# module "cognito" {
+#   source          = "../../../modules/cognito"
+#   user_pool_name  = "dev-user-pool"
+# }
 
 module "ecr" {
   source = "../../../modules/ecr"
