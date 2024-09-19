@@ -47,7 +47,7 @@ module "s3" {
 
 
 module "cognito" {
-  source          = "../../modules/cognito"
+  source          = "../../../modules/cognito"
   user_pool_name  = "prod-user-pool"
 }
 
