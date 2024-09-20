@@ -72,7 +72,8 @@ module "lambda" {
   lambda_env           = "production"
   sqs_queue_name       = "my_sqs_queue"
   sns_topic_name       = "my_sns_topic"
-  nodejs_zip_file      = var.nodejs_zip_file
+  cognito_layer_file   = var.cognito_layer_file
+  slack_layer_file     = var.slack_layer_file
   lambda_nodejs_name   = var.lambda_nodejs_name
   lambda_nodejs_file   = var.lambda_nodejs_file
 }
@@ -100,3 +101,4 @@ resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
   principal     = "cognito-idp.amazonaws.com"
   source_arn    = module.cognito.cognito_user_pool_arn
 }
+

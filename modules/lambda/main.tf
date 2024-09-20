@@ -1,8 +1,18 @@
+terraform {
+  required_providers {
+    slack = {
+      source  = "pablovarela/slack"
+      version = "~> 1.0"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
 resource "aws_lambda_function" "lambda_function" {
   function_name = var.lambda_function_name
   runtime       = "nodejs16.x"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "index.handler"
+  handler       = "cloudwatch.handler"
   filename      = var.lambda_zip_file
   source_code_hash = filebase64sha256(var.lambda_zip_file)
 
@@ -11,8 +21,14 @@ resource "aws_lambda_function" "lambda_function" {
       ENV = var.lambda_env
       SQS_ENV = module.sqs.queue_url
       SNS_ENV = module.sns.sns_topic_arn
+      SLACK_CHANNEL_ID = module.slack.channel_id
+      SLACK_APP_TOKEN  = module.slack.app_token
     }
   }
+
+  layers = [
+    aws_lambda_layer_version.slack_layer.arn
+  ]
 }
 
 resource "aws_lambda_function" "cognito_to_rds_function" {
@@ -38,13 +54,19 @@ resource "aws_lambda_function" "cognito_to_rds_function" {
   }
 
   layers = [
-    aws_lambda_layer_version.mysql_layer.arn
+    aws_lambda_layer_version.cognito_layer.arn
   ]
 }
 
-resource "aws_lambda_layer_version" "mysql_layer" {
-  filename   = var.nodejs_zip_file
-  layer_name = "nodejs-layer"
+resource "aws_lambda_layer_version" "cognito_layer" {
+  filename   = var.cognito_layer_file
+  layer_name = "cognito-layer"
+  compatible_runtimes = ["nodejs14.x", "nodejs16.x", "nodejs18.x"]
+}
+
+resource "aws_lambda_layer_version" "slack_layer" {
+  filename   = var.slack_layer_file
+  layer_name = "slack-layer"
   compatible_runtimes = ["nodejs14.x", "nodejs16.x", "nodejs18.x"]
 }
 
@@ -177,6 +199,13 @@ module "cloudwatch" {
   retention_in_days = var.cloudwatch_retention_in_days
 }
 
+module "slack" {
+  source        = "../slack"
+  channel_name = "lambdalogs"
+  is_private    = false
+  app_name      = "lambdaapp"
+}
+
 # # Cognito Lambda 설정
 # resource "aws_cognito_user_pool" "user_pool" {
 #   name = "user_pool"
@@ -232,3 +261,4 @@ data "terraform_remote_state" "cognito" {
     path = "../../../live/dev/static/terraform.tfstate"
   }
 }
+

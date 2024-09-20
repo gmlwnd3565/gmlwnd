@@ -44,7 +44,12 @@ variable "cloudwatch_retention_in_days" {
   default     = 7
 }
 
-variable "nodejs_zip_file" {
+variable "cognito_layer_file" {
   type        = string
-  description = "The path to the NodeJs zip file."
+  description = "The path to the Cognito zip file."
+}
+
+variable "slack_layer_file" {
+  type        = string
+  description = "The path to the Slack zip file."
 }

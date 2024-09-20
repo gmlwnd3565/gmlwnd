@@ -54,10 +54,16 @@ variable "lambda_nodejs_file" {
   default     = "cognito_function.zip"
 }
 
-variable "nodejs_zip_file" {
+variable "cognito_layer_file" {
   type        = string
   description = "The path to the Cognito zip file."
-  default     = "layer.zip"
+  default     = "cognito_layer.zip"
+}
+
+variable "slack_layer_file" {
+  type        = string
+  description = "The path to the Slack zip file."
+  default     = "slack_layer.zip"
 }
 
 variable "lambda_environment_variables" {

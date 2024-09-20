@@ -36,7 +36,7 @@ module "security_group" {
   name   = "rds-security-group"
   vpc_id = module.vpc.vpc_id
 
-  ingress_port = [3306, 22, 80]  # MySQL RDS에 필요한 포트
+  ingress_port = [3306, 22, 80, 443]  # MySQL RDS에 필요한 포트
   protocol     = "tcp"
   cidr_blocks  = ["0.0.0.0/0"]  # 필요에 맞게 수정 (예: 제한된 IP로 설정)
 }
