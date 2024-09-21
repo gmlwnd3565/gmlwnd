@@ -10,6 +10,10 @@ module "vpc" {
   private_subnet_cidrs = ["10.1.3.0/24", "10.1.4.0/24"]
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "prod-vpc"
+
+  transit_gateway_id = module.transit_gateway.transit_gateway_id
+  dev_vpc_cidr       = "10.0.0.0/16"  # 개발 VPC의 CIDR 블록
+  prod_vpc_cidr      = "10.1.0.0/16"  # 프로덕션 VPC의 CIDR 블록
 }
 
 module "bastion" {
@@ -71,12 +75,4 @@ module "transit_gateway" {
   prod_vpc_id     = module.prod_vpc.vpc_id
   dev_subnet_ids  = module.dev_vpc.private_subnet_ids
   prod_subnet_ids = module.prod_vpc.private_subnet_ids
-}
-
-module "prod_routing" {
-  source = "../../../modules/vpc"
-
-  transit_gateway_id = module.transit_gateway.transit_gateway_id
-  dev_vpc_cidr       = "10.0.0.0/16"  # 개발 VPC의 CIDR 블록
-  prod_vpc_cidr      = "10.1.0.0/16"  # 프로덕션 VPC의 CIDR 블록
 }

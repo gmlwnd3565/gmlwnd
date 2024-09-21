@@ -10,6 +10,10 @@ module "vpc" {
   private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
+
+  transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
+  dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
+  prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
 }
 
 
@@ -74,16 +78,8 @@ module "alb" {
 module "transit_gateway" {
   source = "../../../modules/transit_gateway"
 
-  dev_vpc_id      = module.dev_vpc.vpc_id
-  prod_vpc_id     = module.prod_vpc.vpc_id
-  dev_subnet_ids  = module.dev_vpc.private_subnet_ids
-  prod_subnet_ids = module.prod_vpc.private_subnet_ids
-}
-
-module "dev_routing" {
-  source = "../../../modules/vpc"
-
-  transit_gateway_id = module.transit_gateway.transit_gateway_id
-  dev_vpc_cidr       = "10.0.0.0/16"  # 개발 VPC의 CIDR 블록
-  prod_vpc_cidr      = "10.1.0.0/16"  # 프로덕션 VPC의 CIDR 블록
+  dev_vpc_id      = module.vpc.vpc_id
+  prod_vpc_id     = module.vpc.vpc_id
+  dev_subnet_ids  = module.vpc.private_subnet_ids
+  prod_subnet_ids = module.vpc.private_subnet_ids
 }
