@@ -44,3 +44,15 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_eip" "nat" {
   vpc = true
 }
+
+resource "aws_route" "dev_to_prod" {
+  route_table_id         = aws_vpc.main.route_table_id
+  destination_cidr_block = var.prod_vpc_cidr
+  transit_gateway_id     = var.transit_gateway_id
+}
+
+resource "aws_route" "prod_to_dev" {
+  route_table_id         = aws_vpc.main.route_table_id
+  destination_cidr_block = var.dev_vpc_cidr
+  transit_gateway_id     = var.transit_gateway_id
+}

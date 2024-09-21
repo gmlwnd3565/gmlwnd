@@ -71,3 +71,19 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
+module "transit_gateway" {
+  source = "../../../modules/transit_gateway"
+
+  dev_vpc_id      = module.dev_vpc.vpc_id
+  prod_vpc_id     = module.prod_vpc.vpc_id
+  dev_subnet_ids  = module.dev_vpc.private_subnet_ids
+  prod_subnet_ids = module.prod_vpc.private_subnet_ids
+}
+
+module "dev_routing" {
+  source = "../../../modules/vpc"
+
+  transit_gateway_id = module.transit_gateway.transit_gateway_id
+  dev_vpc_cidr       = "10.0.0.0/16"  # 개발 VPC의 CIDR 블록
+  prod_vpc_cidr      = "10.1.0.0/16"  # 프로덕션 VPC의 CIDR 블록
+}
