@@ -1,13 +1,3 @@
-terraform {
-  required_providers {
-    slack = {
-      source  = "pablovarela/slack"
-      version = "~> 1.0"
-    }
-  }
-  required_version = ">= 0.13"
-}
-
 resource "aws_lambda_function" "lambda_function" {
   function_name = var.lambda_function_name
   runtime       = "nodejs16.x"
@@ -21,14 +11,9 @@ resource "aws_lambda_function" "lambda_function" {
       ENV = var.lambda_env
       SQS_ENV = module.sqs.queue_url
       SNS_ENV = module.sns.sns_topic_arn
-      SLACK_CHANNEL_ID = module.slack.channel_id
-      SLACK_APP_TOKEN  = module.slack.app_token
+      SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
     }
   }
-
-  layers = [
-    aws_lambda_layer_version.slack_layer.arn
-  ]
 }
 
 resource "aws_lambda_function" "cognito_to_rds_function" {
@@ -64,12 +49,6 @@ resource "aws_lambda_layer_version" "cognito_layer" {
   compatible_runtimes = ["nodejs14.x", "nodejs16.x", "nodejs18.x"]
 }
 
-resource "aws_lambda_layer_version" "slack_layer" {
-  filename   = var.slack_layer_file
-  layer_name = "slack-layer"
-  compatible_runtimes = ["nodejs14.x", "nodejs16.x", "nodejs18.x"]
-}
-
 resource "aws_iam_role" "lambda_role" {
   # count = length(data.aws_iam_role.existing_lambda_role.arn) == 0 ? 1 : 0
   name = "${var.lambda_function_name}-role"
@@ -87,7 +66,6 @@ resource "aws_iam_role" "lambda_role" {
     ]
   })
 }
-
 
 resource "aws_iam_role" "nodejs_role" {
   # count = length(data.aws_iam_role.existing_lambda_role.arn) == 0 ? 1 : 0
@@ -198,34 +176,6 @@ module "cloudwatch" {
   log_group_name   = "aws-waf-logs-${var.lambda_function_name}"
   retention_in_days = var.cloudwatch_retention_in_days
 }
-
-module "slack" {
-  source        = "../slack"
-  channel_name = "lambdalogs"
-  is_private    = false
-  app_name      = "lambdaapp"
-}
-
-# # Cognito Lambda 설정
-# resource "aws_cognito_user_pool" "user_pool" {
-#   name = "user_pool"
-
-#   lambda_config {
-#     pre_sign_up           = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 가입 요청을 보낼 때 호출
-#     post_confirmation     = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 가입 확인을 마친 후 호출
-#     # pre_authentication  = aws_lambda_function.cognito_to_rds_function.arn        # 사용자가 로그인 요청을 보낼 때 호출
-#     # post_authentication = aws_lambda_function.cognito_to_rds_function.arn       # 사용자가 성공적으로 로그인한 후 호출
-#     # custom_message      = aws_lambda_function.cognito_to_rds_function.arn        # 메시지를 커스터마이즈할 때 호출
-#   }
-# }
-
-# resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
-#   statement_id  = "AllowCognitoInvoke"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.cognito_to_rds_function.function_name
-#   principal     = "cognito-idp.amazonaws.com"
-#   source_arn    = data.terraform_remote_state.cognito.outputs.cognito_user_pool_id
-# }
 
 data "terraform_remote_state" "vpc" {
   backend = "local"

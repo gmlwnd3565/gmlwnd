@@ -11,9 +11,9 @@ module "vpc" {
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
 
-  transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
-  dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
-  prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
+  # transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
+  # dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
+  # prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
 }
 
 
@@ -52,16 +52,6 @@ module "s3" {
     # encrypt        = true
 }
 
-# module "api_gateway" {
-#   source   = "../../modules/api_gateway"
-#   api_name = "dev-api"
-# }
-
-# module "cognito" {
-#   source          = "../../../modules/cognito"
-#   user_pool_name  = "dev-user-pool"
-# }
-
 module "ecr" {
   source = "../../../modules/ecr"
   repository_name = "dev-repo"
@@ -75,11 +65,11 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-module "transit_gateway" {
-  source = "../../../modules/transit_gateway"
+# module "transit_gateway" {
+#   source = "../../../modules/transit_gateway"
 
-  dev_vpc_id      = module.vpc.vpc_id
-  prod_vpc_id     = module.vpc.vpc_id
-  dev_subnet_ids  = module.vpc.private_subnet_ids
-  prod_subnet_ids = module.vpc.private_subnet_ids
-}
+#   dev_vpc_id      = module.vpc.vpc_id
+#   prod_vpc_id     = module.vpc.vpc_id
+#   dev_subnet_ids  = module.vpc.private_subnet_ids
+#   prod_subnet_ids = module.vpc.private_subnet_ids
+# }
