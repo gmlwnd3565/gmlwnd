@@ -102,11 +102,11 @@ resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
   source_arn    = module.cognito.cognito_user_pool_arn
 }
 
-module "transit_gateway" {
-  source = "../../../modules/transit_gateway"
+# module "transit_gateway" {
+#   source = "../../../modules/transit_gateway"
 
-  dev_vpc_id      = module.vpc.vpc_id
-  prod_vpc_id     = module.vpc.vpc_id
-  dev_subnet_ids  = module.vpc.private_subnet_ids
-  prod_subnet_ids = module.vpc.private_subnet_ids
-}
+#   dev_vpc_id      = module.vpc.dev_vpc_id
+#   prod_vpc_id     = module.vpc.prod_vpc_id
+#   dev_subnet_ids  = module.vpc.private_subnet_ids
+#   prod_subnet_ids = module.vpc.private_subnet_ids
+# }

@@ -1,48 +1,41 @@
 variable "cluster_name" {
-  description = "EKS 클러스터 이름"
+  description = "The name of the EKS cluster"
   type        = string
 }
 
-variable "node_group_name" {
-  description = "EKS 노드 그룹 이름"
+variable "cluster_version" {
+  description = "EKS Cluster version"
   type        = string
+  default     = "1.21"
 }
 
 variable "subnet_ids" {
-  description = "EKS 클러스터에 사용할 서브넷 ID 리스트"
+  description = "Subnet IDs for the EKS cluster"
   type        = list(string)
 }
 
-variable "ami_id" {
-  description = "워크노드에 사용할 AMI ID"
+variable "iam_role_name" {
+  description = "Name for the IAM role for EKS"
   type        = string
 }
 
-variable "instance_profile_name" {
-  description = "워크노드에 사용할 인스턴스 프로파일 이름"
+variable "desired_capacity" {
+  description = "Desired capacity of the EKS worker nodes"
+  type        = number
+}
+
+variable "max_capacity" {
+  description = "Maximum capacity of the EKS worker nodes"
+  type        = number
+}
+
+variable "min_capacity" {
+  description = "Minimum capacity of the EKS worker nodes"
+  type        = number
+}
+
+variable "instance_type" {
+  description = "EC2 instance type for the EKS worker nodes"
   type        = string
-}
-
-variable "desired_size" {
-  description = "워크노드의 원하는 크기"
-  type        = number
-  default     = 2
-}
-
-variable "max_size" {
-  description = "워크노드의 최대 크기"
-  type        = number
-  default     = 4
-}
-
-variable "min_size" {
-  description = "워크노드의 최소 크기"
-  type        = number
-  default     = 1
-}
-
-variable "volume_size" {
-  description = "워크노드의 볼륨 크기"
-  type        = number
-  default     = 20
+  default     = "t3.medium"
 }

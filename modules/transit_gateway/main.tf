@@ -1,5 +1,5 @@
 resource "aws_ec2_transit_gateway" "this" {
-  description = "VPC 간 통신을 위한 Transit Gateway"
+  description = "Transit Gateway"
   auto_accept_shared_attachments = "enable"
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"

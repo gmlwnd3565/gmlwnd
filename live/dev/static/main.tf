@@ -26,7 +26,7 @@ module "rds" {
   source         = "../../../modules/rds"
   db_name        = "mydb"
   username       = "admin"
-  password       = "password"
+  password       = "1q2w3e4r!"
   instance_class = "db.t3.micro"  # t3.micro로 변경
   subnet_group   = module.vpc.private_subnet_ids
   security_group_id = module.security_group.security_group_id
@@ -72,18 +72,14 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-
-
-
 module "eks" {
   source              = "../../../modules/eks"
-  cluster_name        = "dev-eks-cluster"
-  node_group_name     = "dev-node-group"
-  subnet_ids          = module.vpc.public_subnet_ids
-  ami_id              = "ami-07d737d4d8119ad79"
-  instance_profile_name = "eks-instance-profile"
-  desired_size        = 2
-  max_size            = 4
-  min_size            = 1
-  volume_size         = 20
+  cluster_name        = "dev-eks"
+  cluster_version     = "1.30"
+  subnet_ids          = module.vpc.private_subnet_ids
+  iam_role_name       = "eks-role"
+  desired_capacity    = 2
+  max_capacity        = 4
+  min_capacity        = 2
+  instance_type       = "t3.medium"
 }
