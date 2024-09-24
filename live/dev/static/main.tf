@@ -75,11 +75,18 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-module "transit_gateway" {
-  source = "../../../modules/transit_gateway"
 
-  dev_vpc_id      = module.vpc.vpc_id
-  prod_vpc_id     = module.vpc.vpc_id
-  dev_subnet_ids  = module.vpc.private_subnet_ids
-  prod_subnet_ids = module.vpc.private_subnet_ids
+
+
+module "eks" {
+  source              = "../../../modules/eks"
+  cluster_name        = "dev-eks-cluster"
+  node_group_name     = "dev-node-group"
+  subnet_ids          = module.vpc.public_subnet_ids
+  ami_id              = "ami-07d737d4d8119ad79"
+  instance_profile_name = "eks-instance-profile"
+  desired_size        = 2
+  max_size            = 4
+  min_size            = 1
+  volume_size         = 20
 }

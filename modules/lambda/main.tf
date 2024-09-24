@@ -261,4 +261,3 @@ data "terraform_remote_state" "cognito" {
     path = "../../../live/dev/static/terraform.tfstate"
   }
 }
-
