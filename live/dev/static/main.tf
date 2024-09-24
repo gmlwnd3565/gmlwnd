@@ -11,9 +11,9 @@ module "vpc" {
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
 
-  # transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
-  # dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
-  # prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
+  transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
+  dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
+  prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
 }
 
 
@@ -65,11 +65,18 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-# module "transit_gateway" {
-#   source = "../../../modules/transit_gateway"
 
-#   dev_vpc_id      = module.vpc.vpc_id
-#   prod_vpc_id     = module.vpc.vpc_id
-#   dev_subnet_ids  = module.vpc.private_subnet_ids
-#   prod_subnet_ids = module.vpc.private_subnet_ids
-# }
+
+
+module "eks" {
+  source              = "../../../modules/eks"
+  cluster_name        = "dev-eks-cluster"
+  node_group_name     = "dev-node-group"
+  subnet_ids          = module.vpc.public_subnet_ids
+  ami_id              = "ami-07d737d4d8119ad79"
+  instance_profile_name = "eks-instance-profile"
+  desired_size        = 2
+  max_size            = 4
+  min_size            = 1
+  volume_size         = 20
+}
