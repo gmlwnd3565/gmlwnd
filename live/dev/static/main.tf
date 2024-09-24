@@ -11,9 +11,6 @@ module "vpc" {
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
 
-  transit_gateway_id   = module.transit_gateway.transit_gateway_id  # Transit Gateway의 ID
-  dev_vpc_cidr         = "10.0.0.0/16"  # 개발 VPC CIDR
-  prod_vpc_cidr        = "10.1.0.0/16"  # 프로덕션 VPC CIDR
 }
 
 

@@ -44,32 +44,3 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_eip" "nat" {
   vpc = true
 }
-
-resource "aws_route" "dev_to_prod" {
-  route_table_id         = aws_route_table.private.id  # 올바른 라우팅 테이블 참조
-  destination_cidr_block = var.prod_vpc_cidr
-  transit_gateway_id     = var.transit_gateway_id
-}
-
-resource "aws_route" "prod_to_dev" {
-  route_table_id         = aws_route_table.private.id  # 올바른 라우팅 테이블 참조
-  destination_cidr_block = var.dev_vpc_cidr
-  transit_gateway_id     = var.transit_gateway_id
-}
-
-
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.name}-public-route-table"
-  }
-}
-
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.name}-private-route-table"
-  }
-}
