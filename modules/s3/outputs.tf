@@ -3,6 +3,6 @@ output "bucket_name" {
 }
 
 output "dynamodb_table" {
-  value       = aws_dynamodb_table.ssoon_dynamodbtable.name
+  value       = aws_dynamodb_table.ssoon_dynamodbtable[0].name
   description = "The name of the DynamoDB table"
 }

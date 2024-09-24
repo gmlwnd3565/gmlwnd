@@ -11,6 +11,7 @@ module "vpc" {
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
 
+
 }
 
 
@@ -48,16 +49,6 @@ module "s3" {
   dynamodb_table = "terraform-locks"
     # encrypt        = true
 }
-
-# module "api_gateway" {
-#   source   = "../../modules/api_gateway"
-#   api_name = "dev-api"
-# }
-
-# module "cognito" {
-#   source          = "../../../modules/cognito"
-#   user_pool_name  = "dev-user-pool"
-# }
 
 module "ecr" {
   source = "../../../modules/ecr"
