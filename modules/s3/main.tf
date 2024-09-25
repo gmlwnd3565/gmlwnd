@@ -2,7 +2,6 @@ provider "aws" {
   region = "ap-northeast-2"
 }
 
-# S3 버킷이 없을 경우에만 새로 생성
 resource "aws_s3_bucket" "soon_s3bucket" {
   bucket = var.bucket_name
 
@@ -20,7 +19,6 @@ resource "aws_s3_bucket_versioning" "ssoon_s3bucket_versioning" {
   }
 }
 
-# S3 버킷 서버 측 암호화 설정 (S3 버킷이 생성된 후 실행)
 resource "aws_s3_bucket_server_side_encryption_configuration" "soon_s3bucket_encryption" {
   bucket = aws_s3_bucket.soon_s3bucket.id
 
@@ -43,6 +41,17 @@ resource "aws_s3_bucket_public_access_block" "soon_s3bucket_public_access" {
 
 resource "aws_dynamodb_table" "ssoon_dynamodbtable" {
   name         = "terraform-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+
+resource "aws_dynamodb_table" "tfstate_dynamodbtable" {
+  name         = "tfstate-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
