@@ -22,18 +22,3 @@ variable "azs" {
   description = "List of availability zones"
   type        = list(string)
 }
-
-variable "transit_gateway_id" {
-  description = "Transit Gateway의 ID"
-  type        = string
-}
-
-variable "dev_vpc_cidr" {
-  description = "개발 VPC의 CIDR 블록"
-  type        = string
-}
-
-variable "prod_vpc_cidr" {
-  description = "프로덕션 VPC의 CIDR 블록"
-  type        = string
-}
