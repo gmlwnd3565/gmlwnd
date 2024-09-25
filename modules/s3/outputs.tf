@@ -12,7 +12,3 @@ output "dynamodb_table" {
   description = "The name of the DynamoDB table"
 }
 
-output "tf_dynamodb_table" {
-  value       = aws_dynamodb_table.tfstate_dynamodbtable.name
-  description = "The name of the DynamoDB table"
-}

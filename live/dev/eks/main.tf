@@ -5,7 +5,7 @@ provider "aws" {
 data "terraform_remote_state" "vpc" {
   backend = "s3"  # VPC 모듈의 상태 저장 위치
   config = {
-    bucket = "cloud-rigde-dev-tfstate"
+    bucket = "cloud-rigde-dev"
     key    = "static/terraform.tfstate"
     region = "ap-northeast-2"
   }

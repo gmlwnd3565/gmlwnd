@@ -111,7 +111,7 @@ resource "kubernetes_config_map" "aws_auth" {
     mapUsers = jsonencode([
       {
         userarn  = "arn:aws:iam::590183788363:user/gusrnr"
-        username = "your-kubernetes-gusrnr"
+        username = "gusrnr"
         groups   = ["system:masters"]
       }
     ])

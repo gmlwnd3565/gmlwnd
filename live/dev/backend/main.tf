@@ -9,9 +9,3 @@ module "s3" {
     # encrypt        = true
 }
 
-module "s3_tfstate" {
-  source      = "../../../modules/s3"
-  bucket_name = "cloud-rigde-dev-tfstate"
-  dynamodb_table = "terraform-locks"
-    # encrypt        = true
-}
