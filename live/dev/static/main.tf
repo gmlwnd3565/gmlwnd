@@ -63,14 +63,14 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-module "eks" {
-  source              = "../../../modules/eks"
-  cluster_name        = "dev-eks"
-  cluster_version     = "1.30"
-  subnet_ids          = module.vpc.private_subnet_ids
-  iam_role_name       = "eks-role"
-  desired_capacity    = 2
-  max_capacity        = 4
-  min_capacity        = 2
-  instance_type       = "t3.medium"
-}
+# module "eks" {
+#   source              = "../../../modules/eks"
+#   cluster_name        = "dev-eks"
+#   cluster_version     = "1.30"
+#   subnet_ids          = module.vpc.private_subnet_ids
+#   iam_role_name       = "eks-role"
+#   desired_capacity    = 2
+#   max_capacity        = 4
+#   min_capacity        = 2
+#   instance_type       = "t3.medium"
+# }
