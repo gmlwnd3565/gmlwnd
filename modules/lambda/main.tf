@@ -26,16 +26,16 @@ resource "aws_lambda_function" "cognito_to_rds_function" {
 
   environment {
     variables = {
-      RDS_ENDPOINT   = data.terraform_remote_state.rds.outputs.rds_endpoint
-      RDS_DB_NAME    = data.terraform_remote_state.rds.outputs.rds_db_name
-      RDS_USERNAME   = data.terraform_remote_state.rds.outputs.rds_username
-      RDS_PASSWORD   = data.terraform_remote_state.rds.outputs.rds_password
+      RDS_ENDPOINT   = data.terraform_remote_state.all.outputs.rds_endpoint
+      RDS_DB_NAME    = data.terraform_remote_state.all.outputs.rds_db_name
+      RDS_USERNAME   = data.terraform_remote_state.all.outputs.rds_username
+      RDS_PASSWORD   = data.terraform_remote_state.all.outputs.rds_password
     }
   }
 
   vpc_config {
-    security_group_ids = [data.terraform_remote_state.security_groups.outputs.security_group_id]
-    subnet_ids         = data.terraform_remote_state.vpc.outputs.public_subnet_ids
+    security_group_ids = [data.terraform_remote_state.all.outputs.security_group_id]
+    subnet_ids         = data.terraform_remote_state.all.outputs.public_subnet_ids
   }
 
   layers = [
@@ -177,37 +177,47 @@ module "cloudwatch" {
   retention_in_days = var.cloudwatch_retention_in_days
 }
 
-data "terraform_remote_state" "vpc" {
-  backend = "local"
+data "terraform_remote_state" "all" {
+  backend = "s3"
   config = {
-    path = "../../../live/dev/static/terraform.tfstate"
+    bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+    key            = "static/terraform.tfstate"   # static의 상태 파일 경로
+    region         = "ap-northeast-2"                  # S3 버킷의 리전
   }
 }
 
-data "terraform_remote_state" "rds" {
-  backend = "local"
-  config = {
-    path = "../../../live/dev/static/terraform.tfstate"
-  }
-}
+# data "terraform_remote_state" "rds" {
+#   backend = "s3"
+#   config = {
+#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
+#     region         = "ap-northeast-2"                  # S3 버킷의 리전
+#   }
+# }
 
-data "terraform_remote_state" "subnets" {
-  backend = "local"
-  config = {
-    path = "../../../live/dev/static/terraform.tfstate"
-  }
-}
+# data "terraform_remote_state" "subnets" {
+#   backend = "s3"
+#   config = {
+#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
+#     region         = "ap-northeast-2"                  # S3 버킷의 리전
+#   }
+# }
 
-data "terraform_remote_state" "security_groups" {
-  backend = "local"
-  config = {
-    path = "../../../live/dev/static/terraform.tfstate"
-  }
-}
+# data "terraform_remote_state" "security_groups" {
+#   backend = "s3"
+#   config = {
+#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
+#     region         = "ap-northeast-2"                  # S3 버킷의 리전
+#   }
+# }
 
-data "terraform_remote_state" "cognito" {
-  backend = "local"
-  config = {
-    path = "../../../live/dev/static/terraform.tfstate"
-  }
-}
+# data "terraform_remote_state" "cognito" {
+#   backend = "s3"
+#   config = {
+#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
+#     region         = "ap-northeast-2"                  # S3 버킷의 리전
+#   }
+# }

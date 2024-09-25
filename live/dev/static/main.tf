@@ -10,8 +10,6 @@ module "vpc" {
   private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
   azs                  = ["ap-northeast-2a", "ap-northeast-2c"]
   name                 = "dev-vpc"
-
-
 }
 
 
@@ -43,19 +41,6 @@ module "security_group" {
   cidr_blocks  = ["0.0.0.0/0"]  # 필요에 맞게 수정 (예: 제한된 IP로 설정)
 }
 
-module "s3" {
-  source      = "../../../modules/s3"
-  bucket_name = "cloud-rigde-dev"
-  dynamodb_table = "terraform-locks"
-    # encrypt        = true
-}
-
-module "s3_tfstate" {
-  source      = "../../../modules/s3"
-  bucket_name = "cloud-rigde-dev-tfstate"
-  dynamodb_table = "tfstate-locks"
-    # encrypt        = true
-}
 
 module "ecr" {
   source = "../../../modules/ecr"

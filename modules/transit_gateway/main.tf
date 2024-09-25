@@ -1,16 +1,3 @@
-# 1. 이미 존재하는 Transit Gateway 확인
-data "aws_ec2_transit_gateway" "existing_tgw" {
-  filter {
-    name   = "tag:Name"
-    values = ["transit-gateway"]
-  }
-  count = 0  # 에러를 방지하기 위해 count를 0으로 설정
-}
-
-# 2. Transit Gateway가 존재하는지 여부를 locals에 저장
-locals {
-  tgw_exists = length(data.aws_ec2_transit_gateway.existing_tgw) > 0
-}
 
 # 3. Transit Gateway가 없을 경우에만 새로 생성
 resource "aws_ec2_transit_gateway" "this" {

@@ -11,7 +11,7 @@ resource "aws_lb" "main" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.main.arn
+  load_balancer_arn = aws_lb.main.arn  # 조건부로 ARN 참조
   port              = 80
   protocol          = "HTTP"
   

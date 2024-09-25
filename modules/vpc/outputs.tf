@@ -1,5 +1,5 @@
 output "vpc_id" {
-  value = local.vpc_exists ? data.aws_vpc.existing_vpc[0].id : aws_vpc.main[0].id
+  value = aws_vpc.main.id
 }
 
 output "public_subnet_ids" {
