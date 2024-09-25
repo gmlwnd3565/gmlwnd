@@ -70,3 +70,44 @@ resource "aws_nat_gateway" "nat" {
 resource "aws_eip" "nat" {
   vpc = true
 }
+
+resource "aws_route_table" "private_route_table" {
+  vpc_id = local.vpc_exists ? data.aws_vpc.existing_vpc[0].id : aws_vpc.main[0].id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.nat[0].id  # NAT 게이트웨이를 경유
+  }
+
+  tags = {
+    Name = "${var.name}-private-route-table"
+  }
+}
+
+# 퍼블릭 서브넷의 라우팅 테이블 (인터넷 게이트웨이 사용)
+resource "aws_route_table" "public_route_table" {
+  vpc_id = local.vpc_exists ? data.aws_vpc.existing_vpc[0].id : aws_vpc.main[0].id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw[0].id  # 인터넷 게이트웨이를 경유
+  }
+
+  tags = {
+    Name = "${var.name}-public-route-table"
+  }
+}
+
+# 프라이빗 서브넷에 라우팅 테이블 연결
+resource "aws_route_table_association" "private_subnet_association" {
+  count          = length(var.private_subnet_cidrs)
+  subnet_id      = aws_subnet.private_subnet[count.index].id
+  route_table_id = aws_route_table.private_route_table.id
+}
+
+# 퍼블릭 서브넷에 라우팅 테이블 연결
+resource "aws_route_table_association" "public_subnet_association" {
+  count          = length(var.public_subnet_cidrs)
+  subnet_id      = aws_subnet.public_subnet[count.index].id
+  route_table_id = aws_route_table.public_route_table.id
+}

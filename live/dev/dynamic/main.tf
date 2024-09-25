@@ -102,11 +102,42 @@ resource "aws_lambda_permission" "allow_cognito_invoke_lambda" {
   source_arn    = module.cognito.cognito_user_pool_arn
 }
 
-# module "transit_gateway" {
-#   source = "../../../modules/transit_gateway"
+module "transit_gateway" {
+  source = "../../../modules/transit_gateway"
+}
 
-#   dev_vpc_id      = module.vpc.dev_vpc_id
-#   prod_vpc_id     = module.vpc.prod_vpc_id
-#   dev_subnet_ids  = module.vpc.private_subnet_ids
-#   prod_subnet_ids = module.vpc.private_subnet_ids
+# # Dev VPC와 Transit Gateway 연결
+# resource "aws_ec2_transit_gateway_vpc_attachment" "dev_vpc_attachment" {
+#   vpc_id             = "vpc-xxxxxxxx"  # Dev VPC ID를 입력하세요
+#   subnet_ids         = ["subnet-xxxxxxxx"]  # Dev 서브넷 ID를 입력하세요
+#   transit_gateway_id = module.transit_gateway.this.id
+
+#   tags = {
+#     Name = "dev-vpc-attachment"
+#   }
+# }
+
+# # Prod VPC와 Transit Gateway 연결
+# resource "aws_ec2_transit_gateway_vpc_attachment" "prod_vpc_attachment" {
+#   vpc_id             = "vpc-yyyyyyyy"  # Prod VPC ID를 입력하세요
+#   subnet_ids         = ["subnet-yyyyyyyy"]  # Prod 서브넷 ID를 입력하세요
+#   transit_gateway_id = module.transit_gateway.this.id
+
+#   tags = {
+#     Name = "prod-vpc-attachment"
+#   }
+# }
+
+# # Dev VPC 라우팅 테이블에서 Prod VPC로의 트래픽을 Transit Gateway로 보냄
+# resource "aws_route" "dev_vpc_to_prod" {
+#   route_table_id         = var.dev_route_table_id  # Dev VPC의 라우팅 테이블 ID를 입력하세요
+#   destination_cidr_block = "10.1.0.0/16"  # Prod VPC의 CIDR 블록을 입력하세요
+#   transit_gateway_id     = module.transit_gateway.this.id
+# }
+
+# # Prod VPC 라우팅 테이블에서 Dev VPC로의 트래픽을 Transit Gateway로 보냄
+# resource "aws_route" "prod_vpc_to_dev" {
+#   route_table_id         = var.prod_route_table_id  # Prod VPC의 라우팅 테이블 ID를 입력하세요
+#   destination_cidr_block = "10.0.0.0/16"  # Dev VPC의 CIDR 블록을 입력하세요
+#   transit_gateway_id     = module.transit_gateway.this.id
 # }

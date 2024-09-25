@@ -38,7 +38,7 @@ module "security_group" {
   name   = "rds-security-group"
   vpc_id = module.vpc.vpc_id
 
-  ingress_port = [3306, 22, 80, 443]  # MySQL RDS에 필요한 포트
+  ingress_port = [3306, 22, 80, 443, 65535] 
   protocol     = "tcp"
   cidr_blocks  = ["0.0.0.0/0"]  # 필요에 맞게 수정 (예: 제한된 IP로 설정)
 }
@@ -47,6 +47,13 @@ module "s3" {
   source      = "../../../modules/s3"
   bucket_name = "cloud-rigde-dev"
   dynamodb_table = "terraform-locks"
+    # encrypt        = true
+}
+
+module "s3_tfstate" {
+  source      = "../../../modules/s3"
+  bucket_name = "cloud-rigde-dev-tfstate"
+  dynamodb_table = "tfstate-locks"
     # encrypt        = true
 }
 
@@ -63,14 +70,14 @@ module "alb" {
   security_groups = [module.security_group.security_group_id]  # 리스트로 변환하여 전달
 }
 
-module "eks" {
-  source              = "../../../modules/eks"
-  cluster_name        = "dev-eks"
-  cluster_version     = "1.30"
-  subnet_ids          = module.vpc.private_subnet_ids
-  iam_role_name       = "eks-role"
-  desired_capacity    = 2
-  max_capacity        = 4
-  min_capacity        = 2
-  instance_type       = "t3.medium"
-}
+# module "eks" {
+#   source              = "../../../modules/eks"
+#   cluster_name        = "dev-eks"
+#   cluster_version     = "1.30"
+#   subnet_ids          = module.vpc.private_subnet_ids
+#   iam_role_name       = "eks-role"
+#   desired_capacity    = 2
+#   max_capacity        = 4
+#   min_capacity        = 2
+#   instance_type       = "t3.large"
+# }
