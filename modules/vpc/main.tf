@@ -49,12 +49,13 @@ resource "aws_eip" "nat" {
   vpc = true
 }
 
+
 resource "aws_route_table" "private_route_table" {
-  vpc_id = local.vpc_exists ? data.aws_vpc.existing_vpc[0].id : aws_vpc.main[0].id
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat[0].id  # NAT 게이트웨이를 경유
+    gateway_id = aws_nat_gateway.nat.id  # NAT 게이트웨이를 경유
   }
 
   tags = {
@@ -64,11 +65,11 @@ resource "aws_route_table" "private_route_table" {
 
 # 퍼블릭 서브넷의 라우팅 테이블 (인터넷 게이트웨이 사용)
 resource "aws_route_table" "public_route_table" {
-  vpc_id = local.vpc_exists ? data.aws_vpc.existing_vpc[0].id : aws_vpc.main[0].id
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw[0].id  # 인터넷 게이트웨이를 경유
+    gateway_id = aws_internet_gateway.igw.id  # 인터넷 게이트웨이를 경유
   }
 
   tags = {

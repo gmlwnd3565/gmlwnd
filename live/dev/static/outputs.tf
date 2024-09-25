@@ -18,10 +18,6 @@ output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
 
-output "s3_bucket_name" {
-  value = module.s3.bucket_name
-}
-
 output "rds_username" {
   value = module.rds.rds_username
   description = "RDS master username"
