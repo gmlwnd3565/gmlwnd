@@ -26,10 +26,10 @@ resource "aws_lambda_function" "cognito_to_rds_function" {
 
   environment {
     variables = {
-      RDS_ENDPOINT   = data.terraform_remote_state.all.outputs.rds_endpoint
-      RDS_DB_NAME    = data.terraform_remote_state.all.outputs.rds_db_name
-      RDS_USERNAME   = data.terraform_remote_state.all.outputs.rds_username
-      RDS_PASSWORD   = data.terraform_remote_state.all.outputs.rds_password
+      RDS_ENDPOINT   = data.terraform_remote_state.all.outputs.endpoint
+      RDS_DB_NAME    = data.terraform_remote_state.all.outputs.db_name
+      RDS_USERNAME   = data.terraform_remote_state.all.outputs.username
+      RDS_PASSWORD   = data.terraform_remote_state.all.outputs.password
     }
   }
 
@@ -180,7 +180,7 @@ module "cloudwatch" {
 data "terraform_remote_state" "all" {
   backend = "s3"
   config = {
-    bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
+    bucket         = "cloud-rigde-dev"  # static의 상태 파일이 저장된 S3 버킷
     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
     region         = "ap-northeast-2"                  # S3 버킷의 리전
   }
