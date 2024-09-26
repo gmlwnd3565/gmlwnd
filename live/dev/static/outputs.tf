@@ -10,28 +10,33 @@ output "bastion_instance_id" {
 #   value = module.lambda.lambda_function_name
 # }
 
-output "rds_endpoint" {
-  value = module.rds.rds_endpoint
-}
-
 output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
 
-output "rds_username" {
-  value = module.rds.rds_username
-  description = "RDS master username"
+output "endpoint" {
+  value = module.rds.endpoint
 }
 
-output "rds_db_name" {
-  value = module.rds.rds_db_name
-  description = "RDS database name"
+output "username" {
+  value = module.rds.username
 }
 
-output "rds_password" {
-  value = module.rds.rds_password
-  description = "RDS master password"
+output "db_name" {
+  value = module.rds.db_name
+}
+
+output "password" {
+  value = module.rds.password
   sensitive = true
+}
+
+output "port" {
+  value = module.rds.port
+}
+
+output "instance_identifier" {
+  value = module.rds.instance_identifier
 }
 
 output "public_subnet_ids" {
