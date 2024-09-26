@@ -1,19 +1,24 @@
-output "rds_endpoint" {
+output "endpoint" {
   value = aws_db_instance.rds.endpoint
 }
 
-output "rds_username" {
+output "username" {
   value = aws_db_instance.rds.username
-  description = "RDS master username"
 }
 
-output "rds_db_name" {
+output "db_name" {
   value = aws_db_instance.rds.db_name
-  description = "RDS database name"
 }
 
-output "rds_password" {
+output "password" {
   value = aws_db_instance.rds.password
-  description = "RDS master password"
   sensitive = true
+}
+
+output "port" {
+  value = aws_db_instance.rds.port
+}
+
+output "instance_identifier" {
+  value = aws_db_instance.rds.id
 }

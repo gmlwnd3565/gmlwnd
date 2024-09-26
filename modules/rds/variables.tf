@@ -29,3 +29,13 @@ variable "security_group_id" {
   description = "The security group ID for the RDS instance"
   type        = string
 }
+
+variable "subnet_ids" {
+  type = list(string)
+  description = "A list of private subnet IDs to launch RDS in"
+}
+
+variable "instance_identifier" {
+  type        = string
+  description = "Identifier for the RDS instance"
+}

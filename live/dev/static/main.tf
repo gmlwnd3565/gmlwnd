@@ -2,6 +2,16 @@ provider "aws" {
   region = "ap-northeast-2"
 }
 
+
+data "terraform_remote_state" "vpc" {
+  backend = "s3"  # VPC 모듈의 상태 저장 위치
+  config = {
+    bucket = "cloud-rigde-dev"
+    key    = "static/terraform.tfstate"
+    region = "ap-northeast-2"
+  }
+}
+
 module "vpc" {
   source = "../../../modules/vpc"
   
@@ -26,9 +36,28 @@ module "rds" {
   db_name        = "mydb"
   username       = "admin"
   password       = "1q2w3e4r!"
-  instance_class = "db.t3.micro"  # t3.micro로 변경
+  instance_class = "db.t3.micro" 
+  instance_identifier    = var.instance_identifier
   subnet_group   = module.vpc.private_subnet_ids
   security_group_id = module.security_group.security_group_id
+  subnet_ids          = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+}
+
+module "secrets_manager" {
+  source                 = "../../../modules/secrets_manager"
+  secret_name            = "dev/teamproject"
+  description            = "RDS connection details"
+  username               = module.rds.username
+  password               = module.rds.password
+  engine                 = "mysql"
+  host                   = module.rds.endpoint
+  port                   = module.rds.port
+  dbname                 = module.rds.db_name
+  db_instance_identifier = module.rds.instance_identifier
+  tags = {
+    Environment = "dev"
+    Project     = "teamproject"
+  }
 }
 
 module "security_group" {
