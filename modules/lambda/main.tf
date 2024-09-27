@@ -2,7 +2,7 @@ resource "aws_lambda_function" "lambda_function" {
   function_name = var.lambda_function_name
   runtime       = "nodejs16.x"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "cloudwatch.handler"
+  handler       = "sqs_trigger.handler"
   filename      = var.lambda_zip_file
   source_code_hash = filebase64sha256(var.lambda_zip_file)
 
@@ -11,7 +11,7 @@ resource "aws_lambda_function" "lambda_function" {
       ENV = var.lambda_env
       SQS_ENV = module.sqs.queue_url
       SNS_ENV = module.sns.sns_topic_arn
-      SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+      SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
     }
   }
 }
