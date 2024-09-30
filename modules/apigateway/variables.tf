@@ -8,6 +8,12 @@ variable "proxy_api_name" {
   type        = string
 }
 
+variable "gateway_name" {
+  description = "The name of the API Gateway."
+  type        = string
+}
+
+
 variable "api_stage_name" {
   description = "The stage name for the API Gateway (e.g., dev, prod)."
   type        = string

@@ -86,6 +86,13 @@ variable "proxy_api_name" {
   default     = "proxy_api_gateway"  # Proxy API Gateway 이름
 }
 
+variable "gateway_name" {
+  type        = string
+  description = "The name of the API Gateway."
+  default     = "MyAPI"  # 기본 API Gateway 이름
+}
+
+
 variable "api_stage_name" {
   type        = string
   description = "The stage name for the API Gateway."

@@ -2,6 +2,15 @@ provider "aws" {
   region = "ap-northeast-2"
 }
 
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+    }
+  }
+  required_version = ">= 0.13"
+}
+
 module "lambda" {
   source              = "../../../modules/lambda"
   lambda_function_name = var.lambda_function_name
@@ -19,12 +28,14 @@ module "api" {
   source          = "../../../modules/apigateway"
   api_name        = var.api_name
   proxy_api_name  = var.proxy_api_name
+  gateway_name    = var.gateway_name
   api_stage_name  = var.api_stage_name
   lambda_arn      = module.lambda.lambda_function_arn
   api_path        = var.api_path
   api_method      = var.api_method
   integration_uri = var.integration_uri
 }
+
 
 module "cognito" {
   source          = "../../../modules/cognito"
