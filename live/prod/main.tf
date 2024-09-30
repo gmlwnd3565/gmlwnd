@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 # dev 환경에서 배포된 리소스를 불러오기 (Terraform Remote State 사용)
-data "terraform_remote_state" "dev" {
+data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
     bucket = "cloud-rigde-dev"  # dev 환경의 S3 상태 저장 버킷
@@ -26,14 +26,18 @@ module "vpc" {
 # prod 환경의 RDS 설정 (dev 환경의 RDS 정보 참조)
 module "rds" {
   source              = "../../modules/rds"
-  db_name             = data.terraform_remote_state.dev.outputs.db_name
-  username            = data.terraform_remote_state.dev.outputs.username
-  password            = data.terraform_remote_state.dev.outputs.password
-  instance_class      = "db.t3.micro"
+  db_name             = data.terraform_remote_state.vpc.outputs.db_name
+  username            = data.terraform_remote_state.vpc.outputs.username
+  password            = data.terraform_remote_state.vpc.outputs.password
+  instance_class      = "db.t3.micro" 
   instance_identifier = "prod-rds"
-  subnet_group        = module.vpc.private_subnet_ids
-  security_group_id   = module.security_group.security_group_id
-  subnet_ids          = module.vpc.private_subnet_ids
+  subnet_group        = [data.terraform_remote_state.vpc.outputs.rds_subnet_group_name]
+  security_group_id   = data.terraform_remote_state.vpc.outputs.security_group_id  # dev 환경의 보안 그룹 참조
+  subnet_ids          = data.terraform_remote_state.vpc.outputs.private_subnet_ids  # dev 서브넷 참조
+  
+  # prod 환경에서 새로 생성하지 않고 dev의 서브넷 그룹과 RDS 참조
+  create_subnet_group = false  
+  subnet_group_name   = data.terraform_remote_state.vpc.outputs.rds_subnet_group_name
 }
 
 # prod 환경에 bastion 호스트 설정

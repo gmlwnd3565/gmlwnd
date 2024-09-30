@@ -1,5 +1,6 @@
-# 3. RDS Subnet Group 생성 - RDS가 없을 경우에만 생성
 resource "aws_db_subnet_group" "rds_subnet_group" {
+  count = var.subnet_group_name == "" ? 1 : 0  # 서브넷 그룹이 없을 때만 생성
+
   name       = "${var.db_name}-subnet-group"
   subnet_ids = var.subnet_ids
 
@@ -7,6 +8,8 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
     Name = "${var.db_name}-subnet-group"
   }
 }
+
+
 
 resource "aws_db_instance" "rds" {
   allocated_storage    = 20
@@ -21,6 +24,6 @@ resource "aws_db_instance" "rds" {
   identifier             = var.instance_identifier
   vpc_security_group_ids = [var.security_group_id]
   skip_final_snapshot = true
-  # 여기에 단일 문자열인 subnet group 이름을 전달
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+  # count를 사용한 리소스를 인덱스로 참조
+  db_subnet_group_name = length(aws_db_subnet_group.rds_subnet_group) > 0 ? aws_db_subnet_group.rds_subnet_group[0].name : var.subnet_group_name
 }

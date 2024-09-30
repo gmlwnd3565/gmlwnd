@@ -50,3 +50,8 @@ output "private_subnet_ids" {
 output "security_group_id" {
   value = module.security_group.security_group_id
 }
+
+
+output "rds_subnet_group_name" {
+  value = "mydb-subnet-group"
+}

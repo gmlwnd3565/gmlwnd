@@ -9,3 +9,12 @@ module "s3" {
     # encrypt        = true
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "cloud-rigde-dev"
+    key            = "static/terraform.tfstate"
+    region         = "ap-northeast-2"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}

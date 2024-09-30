@@ -39,3 +39,15 @@ variable "instance_identifier" {
   type        = string
   description = "Identifier for the RDS instance"
 }
+
+variable "subnet_group_name" {
+  description = "The name of the DB subnet group"
+  type        = string
+  default     = ""
+}
+
+variable "create_subnet_group" {
+  type        = bool
+  description = "Whether to create a new subnet group"
+  default     = true
+}

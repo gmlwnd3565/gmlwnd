@@ -22,3 +22,7 @@ output "port" {
 output "instance_identifier" {
   value = aws_db_instance.rds.id
 }
+
+output "rds_subnet_group_name" {
+  value = length(aws_db_subnet_group.rds_subnet_group) > 0 ? aws_db_subnet_group.rds_subnet_group[0].name : var.subnet_group_name
+}
