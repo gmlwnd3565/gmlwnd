@@ -30,7 +30,7 @@ module "rds" {
   username            = data.terraform_remote_state.vpc.outputs.username
   password            = data.terraform_remote_state.vpc.outputs.password
   instance_class      = "db.t3.micro" 
-  instance_identifier = "prod-rds"
+  instance_identifier = "prod-rds-instance"
   subnet_group        = [data.terraform_remote_state.vpc.outputs.rds_subnet_group_name]
   security_group_id   = data.terraform_remote_state.vpc.outputs.security_group_id  # dev 환경의 보안 그룹 참조
   subnet_ids          = data.terraform_remote_state.vpc.outputs.private_subnet_ids  # dev 서브넷 참조
@@ -47,6 +47,7 @@ module "bastion" {
   bastion_instance_type = "t2.micro"
   public_subnet_id    = module.vpc.public_subnet_ids[0]
   key_name            = "teamProject"
+
 }
 
 # prod 환경에 ALB 설정
