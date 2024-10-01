@@ -11,7 +11,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 
 resource "aws_db_parameter_group" "utf8mb4" {
   name        = "my-utf8mb4-parameter-group"
-  family      = "mysql8.0"
+  family      = "mysql5.7"
   description = "Parameter group for utf8mb4"
 
   parameter {
