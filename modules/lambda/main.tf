@@ -11,7 +11,7 @@ resource "aws_lambda_function" "lambda_function" {
       ENV = var.lambda_env
       SQS_ENV = module.sqs.queue_url
       SNS_ENV = module.sns.sns_topic_arn
-      SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
+      SLACK_WEBHOOK_URL = "https://hooks.slack.com/services/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"
     }
   }
 }
@@ -185,39 +185,3 @@ data "terraform_remote_state" "all" {
     region         = "ap-northeast-2"                  # S3 버킷의 리전
   }
 }
-
-# data "terraform_remote_state" "rds" {
-#   backend = "s3"
-#   config = {
-#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
-#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
-#     region         = "ap-northeast-2"                  # S3 버킷의 리전
-#   }
-# }
-
-# data "terraform_remote_state" "subnets" {
-#   backend = "s3"
-#   config = {
-#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
-#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
-#     region         = "ap-northeast-2"                  # S3 버킷의 리전
-#   }
-# }
-
-# data "terraform_remote_state" "security_groups" {
-#   backend = "s3"
-#   config = {
-#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
-#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
-#     region         = "ap-northeast-2"                  # S3 버킷의 리전
-#   }
-# }
-
-# data "terraform_remote_state" "cognito" {
-#   backend = "s3"
-#   config = {
-#     bucket         = "cloud-rigde-dev-tfstate"  # static의 상태 파일이 저장된 S3 버킷
-#     key            = "static/terraform.tfstate"   # static의 상태 파일 경로
-#     region         = "ap-northeast-2"                  # S3 버킷의 리전
-#   }
-# }
