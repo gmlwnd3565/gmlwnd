@@ -324,10 +324,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_posts
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 
-  lifecycle {
-    ignore_changes = [response_parameters]
-  }
-
   response_templates = {
     "application/json" = ""
   }
@@ -344,10 +340,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_post"
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,GET,POST,PUT,DELETE'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  lifecycle {
-    ignore_changes = [response_parameters]
   }
 
   response_templates = {
@@ -403,10 +395,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_api" 
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 
-  lifecycle {
-    ignore_changes = [response_parameters]
-  }
-
   response_templates = {
     "application/json" = ""
   }
@@ -458,10 +446,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_s3" {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,GET,POST,PUT,DELETE'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  lifecycle {
-    ignore_changes = [response_parameters]
   }
 
   response_templates = {
@@ -517,10 +501,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_uploa
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
   }
 
-  lifecycle {
-    ignore_changes = [response_parameters]
-  }
-
   response_templates = {
     "application/json" = ""
   }
@@ -572,10 +552,6 @@ resource "aws_api_gateway_integration_response" "cors_integration_response_users
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,GET,POST,PUT,DELETE'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
-  }
-
-  lifecycle {
-    ignore_changes = [response_parameters]
   }
 
   response_templates = {
